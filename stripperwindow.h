@@ -5,14 +5,13 @@
 #include <QObject>
 #include <QList>
 #include <QString>
-#include <QPixmap>
 #include <QTreeWidget>
 
 class StripperWindow : public QObject, public QTreeWidgetItem
 {
     Q_OBJECT
     QString title;
-    QPixmap icon;
+    QString process_name;
     bool borderless_p;
     HWND handle;
 public:
@@ -21,6 +20,8 @@ public:
 
     bool StrippedP();
     void SetStrippedP(bool stripped_p);
+
+    virtual void setData(int column, int role, const QVariant &value);
 
     //sender keeps list.
     static QList<StripperWindow*> *SystemGetAllWindows(QTreeWidget *parent);

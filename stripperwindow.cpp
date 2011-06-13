@@ -1,5 +1,6 @@
 #include "stripperwindow.h"
 #include <cstdlib>
+#include <cstdarg>
 #include <QDebug>
 
 StripperWindow::StripperWindow(QTreeWidget *parent) :
@@ -12,7 +13,11 @@ StripperWindow::StripperWindow(QTreeWidget *parent, HWND hwnd):
 {
     //stubbed out.
     handle = hwnd;
-    icon = QPixmap();
+
+    //we're actually getting the image name's description. fun, eh?
+    DWORD procid;
+    GetWindowThreadProcessId(handle, &procid); //get a process identifier...
+    HANDLE prochnd;
 
     LPWSTR lpwstr_buf = (WCHAR*)calloc(sizeof(WCHAR), 255);
     GetWindowText(hwnd, lpwstr_buf, 255);
@@ -22,8 +27,10 @@ StripperWindow::StripperWindow(QTreeWidget *parent, HWND hwnd):
     borderless_p = false;
 
     //this might seem like duplication...
+    setData(0, Qt::DisplayRole, QVariant(title));
+    setFont(0, QFont(QString("Verdana"), 14, QFont::Normal, false));
     setData(1, Qt::DisplayRole, QVariant(title));
-    setFont(1, QFont(QString("Verdana"), 14, QFont::Normal, false));
+    setFont(1, QFont(QString("Verdana"), 14, QFont::Bold, false));
     setData(2, Qt::CheckStateRole, QVariant(StrippedP()));
 }
 
@@ -38,10 +45,46 @@ void StripperWindow::SetStrippedP(bool stripped_p)
 {
     LONG status_base = GetWindowLong(handle, GWL_STYLE);
     //set WS_CAPTION - if stripped_p is true, remove WS_CAPTION, etc.
+    LONG res;
     if(stripped_p) {
-        SetWindowLong(handle, GWL_STYLE, status_base & (~WS_CAPTION));
+        res = SetWindowLong(handle, GWL_STYLE, status_base & (~WS_CAPTION));
     } else {
-        SetWindowLong(handle, GWL_STYLE, status_base | WS_CAPTION);
+        res = SetWindowLong(handle, GWL_STYLE, status_base | WS_CAPTION);
+    }
+
+    if(res == 0) {
+        LPWSTR msg_buf = (WCHAR*)calloc(sizeof(WCHAR), 512);
+        DWORD err = GetLastError();
+        va_list vl;
+        FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, err, 0, msg_buf, 512, &vl);
+        QString error_text = QString::fromWCharArray(msg_buf, 255);
+
+        qDebug() << error_text;
+
+        //now trap Access is Denieds and make sure it disables further interaction.
+    }
+
+    //force a double window resize AND a redraw - don't just repaint, since it doesn't seem to actually update the position of the controls.
+    RECT win_rect;
+    GetWindowRect(handle, &win_rect);
+    SetWindowPos(handle, NULL,
+                 win_rect.left, win_rect.top,
+                 win_rect.right - win_rect.left, //so we get some resizing done...
+                 win_rect.bottom - win_rect.top - 1,
+                 SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+    SetWindowPos(handle, NULL,
+                 win_rect.left, win_rect.top,
+                 win_rect.right - win_rect.left , //so we get some resizing done...
+                 win_rect.bottom - win_rect.top + 1,
+                 SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+    InvalidateRect(handle, NULL, TRUE);
+}
+
+void StripperWindow::setData(int column, int role, const QVariant &value)
+{
+    QTreeWidgetItem::setData(column, role, value);
+    if(column == 2) {
+        SetStrippedP(value.toBool());
     }
 }
 
