@@ -30,7 +30,7 @@ StripperWindow::StripperWindow(QTreeWidget *parent, HWND hwnd):
     setData(0, Qt::DisplayRole, QVariant(title));
     setFont(0, QFont(QString("Verdana"), 14, QFont::Normal, false));
     setData(1, Qt::DisplayRole, QVariant(title));
-    setFont(1, QFont(QString("Verdana"), 14, QFont::Bold, false));
+    setFont(1, QFont(QString("Verdana"), 14, QFont::Normal, false));
     setData(2, Qt::CheckStateRole, QVariant(StrippedP()));
 }
 

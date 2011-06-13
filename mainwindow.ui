@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>336</width>
-    <height>381</height>
+    <width>508</width>
+    <height>419</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -26,6 +26,9 @@
    <string>Striptease</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QTreeWidget" name="treeWidget">
@@ -46,27 +49,22 @@
       </property>
       <column>
        <property name="text">
-        <string notr="true">1</string>
+        <string notr="true"/>
        </property>
       </column>
       <column>
        <property name="text">
-        <string notr="true">2</string>
+        <string notr="true"/>
        </property>
       </column>
       <column>
        <property name="text">
-        <string notr="true">3</string>
+        <string notr="true">Stripped?</string>
        </property>
       </column>
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QStatusBar" name="statusBar">
-   <property name="cursor">
-    <cursorShape>ArrowCursor</cursorShape>
-   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

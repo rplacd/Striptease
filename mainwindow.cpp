@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     windows = StripperWindow::SystemGetAllWindows((QTreeWidget*)ui->treeWidget);
 
     //setting up the tableview's look and feel
-    ui->treeWidget->setHeaderLabels(QStringList() << "" << "Window title" << "Stripped?");
+    ui->treeWidget->setHeaderLabels(QStringList() << "" << "" << "Stripped?");
     UpdateWindowList();
 }
 
