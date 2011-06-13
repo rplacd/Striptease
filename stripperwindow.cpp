@@ -62,6 +62,8 @@ void StripperWindow::SetStrippedP(bool stripped_p)
         qDebug() << error_text;
 
         //now trap Access is Denieds and make sure it disables further interaction.
+        if(err == ERROR_ACCESS_DENIED)
+            setDisabled(true);
     }
 
     //force a double window resize AND a redraw - don't just repaint, since it doesn't seem to actually update the position of the controls.
