@@ -6,12 +6,13 @@
 #include <QList>
 #include <QString>
 #include <QTreeWidget>
+#include <QPixmap>
 
 class StripperWindow : public QObject, public QTreeWidgetItem
 {
     Q_OBJECT
     QString title;
-    QString process_name;
+    QPixmap icon;
     bool borderless_p;
     HWND handle;
 public:

@@ -14,10 +14,14 @@ StripperWindow::StripperWindow(QTreeWidget *parent, HWND hwnd):
     //stubbed out.
     handle = hwnd;
 
-    //we're actually getting the image name's description. fun, eh?
-    DWORD procid;
-    GetWindowThreadProcessId(handle, &procid); //get a process identifier...
-    HANDLE prochnd;
+    HICON icon_handle = (HICON)GetClassLongPtr(handle, GCLP_HICON);
+    //pre-empt the "failed to GetIconInfo() error" so it speeds through quickly.
+    ICONINFO dummy;
+    if(!GetIconInfo(icon_handle, &dummy)) {
+        icon = QPixmap();
+    } else {
+        icon = QPixmap::fromWinHICON(icon_handle);
+    }
 
     LPWSTR lpwstr_buf = (WCHAR*)calloc(sizeof(WCHAR), 255);
     GetWindowText(hwnd, lpwstr_buf, 255);
@@ -27,8 +31,7 @@ StripperWindow::StripperWindow(QTreeWidget *parent, HWND hwnd):
     borderless_p = false;
 
     //this might seem like duplication...
-    setData(0, Qt::DisplayRole, QVariant(title));
-    setFont(0, QFont(QString("Verdana"), 14, QFont::Normal, false));
+    setData(0, Qt::DecorationRole, QVariant(icon));
     setData(1, Qt::DisplayRole, QVariant(title));
     setFont(1, QFont(QString("Verdana"), 14, QFont::Normal, false));
     setData(2, Qt::CheckStateRole, QVariant(StrippedP()));
