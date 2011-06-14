@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     windows = StripperWindow::SystemGetAllWindows((QTreeWidget*)ui->treeWidget);
 
+    connect(ui->refreshButton, SIGNAL(released()), this, SLOT(UpdateWindowList()));
+
     //setting up the tableview's look and feel
     ui->treeWidget->setHeaderLabels(QStringList() << "" << "" << "Stripped?");
     UpdateWindowList();

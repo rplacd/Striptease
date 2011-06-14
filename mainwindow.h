@@ -18,9 +18,11 @@ public:
     ~MainWindow();
 
 private:
-    void UpdateWindowList();
     Ui::MainWindow *ui;
     QList<StripperWindow*> *windows;
+
+public slots:
+    void UpdateWindowList();
 };
 
 #endif // MAINWINDOW_H
