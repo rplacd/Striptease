@@ -33,7 +33,7 @@ StripperWindow::StripperWindow(QTreeWidget *parent, HWND hwnd):
     //this might seem like duplication...
     setData(0, Qt::DecorationRole, QVariant(icon));
     setData(1, Qt::DisplayRole, QVariant(title));
-    setFont(1, QFont(QString("Verdana"), 14, QFont::Normal, false));
+    setFont(1, QFont(QString("Verdana"), 0, QFont::Bold, false));
     setData(2, Qt::CheckStateRole, QVariant(StrippedP()));
 }
 
