@@ -46,6 +46,11 @@ bool StripperWindow::StrippedP()
 
 void StripperWindow::SetStrippedP(bool stripped_p)
 {
+    //don't unnecessarily go through setting the same state and then resizing!
+    //we don't want extra resizing!
+    if(StrippedP() == stripped_p)
+        return;
+
     LONG status_base = GetWindowLong(handle, GWL_STYLE);
     //set WS_CAPTION - if stripped_p is true, remove WS_CAPTION, etc.
     LONG res;
