@@ -1,3 +1,4 @@
+#pragma comment(lib,"user32.lib")
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
