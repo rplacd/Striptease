@@ -23,6 +23,12 @@ private:
 
 public slots:
     void UpdateWindowList();
+    void SetExtraOptionVisiblity(bool);
+
+    //automatic refresh skunkworks.
+    void AutomaticRefresh();
+    void SetAutomaticRefreshState(bool);
+    void SetManualInteractionDisabled(bool);
 };
 
 #endif // MAINWINDOW_H
